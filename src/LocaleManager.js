@@ -2,9 +2,13 @@
 // https://croquet.io
 // info@croquet.io
 
-const FallbackLocale = 'en';
+const FallbackLocale = "en";
 
 function detectPrimaryLanguage() {
+    // Check url param 'lang' first, if not specified, use browser language preference
+    const searchParams = new URLSearchParams(window.location.search);
+    const langInUrl = searchParams.get("lang");
+    if (langInUrl) return langInUrl;
     return navigator.language;
 }
 
@@ -46,19 +50,35 @@ class LocaleManager {
     async loadUserLocalizableStrings(langKey) {
         const localizableStrings = await this.tryLoadLocalizableStrings(this.userLocalizableStringsBaseUrl, langKey);
         const systemLocalizableStrings = this.systemLocalizedStringsMap.get(langKey) || {};
-        this.localizedStringsMap.set(langKey, { ...systemLocalizableStrings, ...localizableStrings });
 
-        console.log('this.localizedStringsMap :>> ', this.localizedStringsMap);
+        // Register user-level localizedStrings overriding system level localizedStrings
+        this.localizedStringsMap.set(langKey, { ...systemLocalizableStrings, ...localizableStrings });
     }
 
     // actions
     localize(stringKey, language = detectPrimaryLanguage()) {
-        let localizableStrings = this.localizedStringsMap.get(language);
+        const langKey = language.toLowerCase();
+
+        // Try language specific localizedStrings first
+        let localizableStrings = this.localizedStringsMap.get(langKey);
+
+        // If not found, try with shorter key (ja-JP -> ja)
+        if (!localizableStrings && (langKey.indexOf("-") > 0)) {
+            const tokens = langKey.split("-");
+            let shorterLangKey;
+            while (!(tokens.length == 1 || localizableStrings)) {
+                tokens.pop();
+                shorterLangKey = tokens.join("-");
+                localizableStrings = this.localizedStringsMap.get(shorterLangKey);
+            }
+        }
+
+        // If still not found, try fallback localizedStrings
         if (!localizableStrings) {
             localizableStrings = this.localizedStringsMap.get(FallbackLocale);
         }
         const value = localizableStrings[stringKey];
-        if (!value) return stringKey;
+        if (!value) return stringKey; // If there is no localization entry, return the original stringKey
         return value;
     }
 
