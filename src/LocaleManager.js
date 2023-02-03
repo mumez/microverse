@@ -33,10 +33,10 @@ class LocaleManager {
         }
     }
 
-    async loadFallbackLocalizableStrings(language = detectPrimaryLanguage()) {
+    async loadFallbackLocalizableStrings() {
         await this.loadLocalizableStrings(FallbackLocale);
     }
-    async loadLocalizableStrings(language = navigator.language) {
+    async loadLocalizableStrings(language = detectPrimaryLanguage()) {
         const langKey = language.toLowerCase();
         await this.loadSystemLocalizableStrings(langKey);
         this.loadUserLocalizableStrings(langKey);
@@ -83,7 +83,8 @@ class LocaleManager {
     }
 
     mergeLocalizableStrings(partialLocalizableStrings, language = detectPrimaryLanguage()) {
-        let localizableStrings = this.localizedStringsMap.get(language);
+        const langKey = language.toLowerCase();
+        let localizableStrings = this.localizedStringsMap.get(langKey);
         if (!localizableStrings) return;
         partialLocalizableStrings.forEach((value, key) => {
             localizableStrings.set(key, value);
@@ -110,6 +111,11 @@ class LocaleManager {
 
     localizableStringsUrlFor(baseDirectory, language) {
         return `${this.localesDirectoryFor(baseDirectory, language)}/localizable-strings.json`;
+    }
+
+    // debugging
+    detectPrimaryLanguage() {
+        return detectPrimaryLanguage();
     }
 
 }
