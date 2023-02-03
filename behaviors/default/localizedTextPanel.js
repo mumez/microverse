@@ -29,16 +29,15 @@ class LocalizedTextPawn {
         ctx.font = "40px Arial";
         const text = this.actor._cardData.textLabel;
         const w = this.canvas.width;
-        ctx.fillText(this.language(), w - (w/2), 85);
-        ctx.fillText(text, w - 40, 125);
+        ctx.fillText(this.localized(text), w - (w / 2), 85);
         this.texture.needsUpdate = true;
         console.log('--updateText--', text);
         console.log('---DefaultLocaleManager :>> ', this.actor.localeManager);
     }
 
     // accessing
-    language() {
-        return navigator.language;
+    localized(originalString) {
+        return this.actor.localeManager.localize(originalString);
     }
 
 }
