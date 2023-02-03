@@ -2,20 +2,6 @@
 // https://croquet.io
 // info@croquet.io
 
-/*
-
-This module manages a list of recent values from a bitcoin position
-server. It is used with the Elected module, so that one of
-participants is chosen to fetch values.
-
-*/
-
-/*
-
-BitcoinTrackerActor's history is a list of {date<milliseconds>, and amount<dollar>}
-
-*/
-
 class LocalizedTextActor {
     setup() {
         if (this._cardData.textLabel == null) {
@@ -26,6 +12,7 @@ class LocalizedTextActor {
 
     changeText() {
         this.say("textChanged");
+        console.log('this :>> ', this);
     }
 }
 
@@ -41,13 +28,19 @@ class LocalizedTextPawn {
         ctx.fillStyle = "white";
         ctx.font = "40px Arial";
         const text = this.actor._cardData.textLabel;
-        ctx.fillText(text, this.canvas.width - 40, 85);
+        const w = this.canvas.width;
+        ctx.fillText(this.language(), w - (w/2), 85);
+        ctx.fillText(text, w - 40, 125);
         this.texture.needsUpdate = true;
         console.log('--updateText--', text);
+        console.log('---DefaultLocaleManager :>> ', this.actor.localeManager);
     }
 
-    teardown() {
+    // accessing
+    language() {
+        return navigator.language;
     }
+
 }
 
 

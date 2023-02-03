@@ -28,7 +28,9 @@ import { MultiBlaster } from '../apps/multiblaster.js';
 
 import JSZip from 'jszip';
 import * as fflate from 'fflate';
-import {AssetManager} from "./wcAssetManager.js";
+import { AssetManager } from "./wcAssetManager.js";
+
+import DefaultLocaleManager from './LocaleManager.js';
 
 const defaultAvatarNames = [
     "newwhite", "madhatter", "marchhare", "queenofhearts", "cheshirecat", "alice"
@@ -121,6 +123,10 @@ function loadInitialBehaviors(paths, directory) {
     }
     let isSystem = directory === Constants.SystemBehaviorDirectory;
     let root = window.microverseDir ? window.microverseDir : baseurl;
+
+    DefaultLocaleManager.setupLoadingLocalizableStrings({
+        root, isSystem, directory
+    });
 
     let promises = paths.map((path) => {
         if (!isSystem) {

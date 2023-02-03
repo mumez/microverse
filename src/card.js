@@ -19,6 +19,8 @@ import { DynamicTexture } from './DynamicTexture.js'
 import { AM_Code, PM_Code } from './code.js';
 import { WorldSaver } from './worldSaver.js';
 
+import DefaultLocaleManager from './LocaleManager.js';
+
 // import { forEach } from 'jszip';
 
 const { MeshBVH, /*MeshBVHVisualizer*/ } = THREE_MESH_BVH;
@@ -214,7 +216,9 @@ export class CardActor extends mix(Actor).with(AM_Smoothed, AM_PointerTarget, AM
     get layers() { return this._layers; }
     get isCard() {return true;}
     get name() {return this._name || 'Card'}
-    get color() {return this._color || 0xffffff}
+    get color() { return this._color || 0xffffff }
+    
+    get localeManager() { return DefaultLocaleManager }
 
     uv2xy(uv) {
         return [this._cardData.textureWidth * uv[0], this._cardData.textureHeight * (1 - uv[1])];
