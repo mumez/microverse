@@ -12,7 +12,6 @@ class LocalizedTextActor {
 
     changeText() {
         this.say("textChanged");
-        console.log('this :>> ', this);
     }
 }
 
@@ -25,19 +24,29 @@ class LocalizedTextPawn {
     updateText() {
         let ctx = this.canvas.getContext("2d");
         ctx.textAlign = "right";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "yellow";
         ctx.font = "40px Arial";
-        const text = this.actor._cardData.textLabel;
+        const textContents = this.actor._cardData.textContents;
         const w = this.canvas.width;
-        ctx.fillText(this.localized(text), w - (w / 2), 85);
+        let h = 85;
+        ctx.fillText(this.detectedPrimaryLanguage, w / 2, h);
+        h += 25
+        ctx.fillStyle = "white";
+        textContents.forEach(text => {
+            const localizedText = this.localized(text);
+            ctx.fillText(localizedText, w / 2, h += 45);
+        });
         this.texture.needsUpdate = true;
-        console.log('--updateText--', text);
-        console.log('---DefaultLocaleManager :>> ', this.actor.localeManager);
+        console.log('---localeManager :>> ', this.actor.localeManager);
     }
 
     // accessing
     localized(originalString) {
         return this.actor.localeManager.localize(originalString);
+    }
+
+    get detectedPrimaryLanguage() {
+        return this.actor.localeManager.detectPrimaryLanguage();
     }
 
 }
