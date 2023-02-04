@@ -1,5 +1,12 @@
 {
     "yes": "Oui",
     "no": "Non",
-    "hello": "Bonjour"
+    "hello": "Bonjour",
+    "Import": "Importer",
+    "Connect": "Connecter",
+    "Gather": "Rassembler",
+    "Stop Gathering": "Arrêtez de vous rassembler",
+    "Invite": "Inviter",
+    "Settings": "Paramètres",
+    "Help": "Aide"
 }

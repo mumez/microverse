@@ -1,5 +1,12 @@
 {
     "yes": "はい",
     "no": "いいえ",
-    "hello": "こんにちは"
+    "hello": "こんにちは",
+    "Import": "インポート",
+    "Connect": "接続",
+    "Gather": "集合",
+    "Stop Gathering": "解散",
+    "Invite": "招待",
+    "Settings": "設定",
+    "Help": "ヘルプ"
 }

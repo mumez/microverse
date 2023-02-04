@@ -122,4 +122,8 @@ class LocaleManager {
 
 const DefaultLocaleManager = new LocaleManager();
 
+export function L(stringKey, language) {
+    return DefaultLocaleManager.localize(stringKey, language)
+}
+
 export default DefaultLocaleManager;
