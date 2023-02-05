@@ -145,27 +145,27 @@ function initWorldMenu(badge) {
     let buttons = `
 <div id="worldMenu-load" class="menu-label menu-item">
     <div class="menu-icon import-icon"></div>
-    <span class="menu-label-text">${L('Import')}</span>
+    <span class="menu-label-text">${L("Import")}</span>
 </div>
 <div id="worldMenu-connect" class="menu-label menu-item">
     <div class="menu-icon connect-icon" id="connectIcon"></div>
-    <span class="menu-label-text" id="connectBtn">${L('Connect')}</span>
+    <span class="menu-label-text" id="connectBtn">${L("Connect")}</span>
 </div>
 <div id="worldMenu-gather" class="menu-label menu-item">
     <div class="menu-icon presentationMode-icon"></div>
-    <span class="menu-label-text">${L('Gather')}</span>
+    <span class="menu-label-text">${L("Gather")}</span>
 </div>
 <div id="worldMenu-shareButton" class="menu-label menu-item">
     <div class="menu-icon share-icon"></div>
-    <span class="menu-label-text">${L('Invite')}</span>
+    <span class="menu-label-text">${L("Invite")}</span>
 </div>
 <div id="worldMenu-settings" class="menu-label menu-item">
     <div class="menu-icon settings-icon"></div>
-    <span class="menu-label-text">${L('Settings')}</span>
+    <span class="menu-label-text">${L("Settings")}</span>
 </div>
 <div id="worldMenu-helpButton" class="menu-label menu-item">
     <div class="menu-icon help-icon"></div>
-    <span class="menu-label-text">${L('Help')}</span>
+    <span class="menu-label-text">${L("Help")}</span>
 </div>
 `.trim();
 
