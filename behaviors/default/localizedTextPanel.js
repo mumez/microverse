@@ -37,7 +37,7 @@ class LocalizedTextPawn {
             ctx.fillText(localizedText, w / 2, h += 45);
         });
         this.texture.needsUpdate = true;
-        console.log('---textTranslationsManager :>> ', this.actor.localeManager);
+        console.log('---textTranslationsManager :>> ', this.actor.textTranslationsManager);
     }
 
     // accessing
