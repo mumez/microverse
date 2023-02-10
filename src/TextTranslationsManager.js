@@ -109,11 +109,14 @@ class TextTranslationsManager {
 
 const singleton = new TextTranslationsManager();
 
+// For user library translation
 export function _(stringKey, domain, language) {
     return singleton.localize(stringKey, domain, language)
 }
-export function L(stringKey, domain, language) {
-    return singleton.localize(stringKey, domain, language)
+
+// For core library translation
+export function __(stringKey, language) {
+    return singleton.localize(stringKey, 'croquet', language)
 }
 
 export default singleton;
