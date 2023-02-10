@@ -28,8 +28,9 @@ import { MultiBlaster } from '../apps/multiblaster.js';
 
 import JSZip from 'jszip';
 import * as fflate from 'fflate';
-import {AssetManager} from "./wcAssetManager.js";
+import { AssetManager } from "./wcAssetManager.js";
 
+import TextTranslationsManager from './TextTranslationsManager.js';
 const defaultAvatarNames = [
     "newwhite", "madhatter", "marchhare", "queenofhearts", "cheshirecat", "alice"
 ];
@@ -121,6 +122,12 @@ function loadInitialBehaviors(paths, directory) {
     }
     let isSystem = directory === Constants.SystemBehaviorDirectory;
     let root = window.microverseDir ? window.microverseDir : baseurl;
+
+    TextTranslationsManager.setup({
+        baseUrl: root,
+        behaviorDirectoryName: directory,
+        isSystem: isSystem
+    });
 
     let promises = paths.map((path) => {
         if (!isSystem) {
