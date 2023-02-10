@@ -2,7 +2,7 @@
 // https://croquet.io
 // info@croquet.io
 
-const FallbackLocale = "en";
+const FallbackLanguage = "en";
 const BaseSubDirectoryPath = "assets/locales";
 
 function detectDefaultLanguage() {
@@ -34,10 +34,22 @@ class TextTranslationsManager {
         const langKey = language.toLowerCase();
         const localizableStrings = await this.tryLoadLocalizableStrings(this.localesUrl, domain, langKey);
         this.ensureLocalizableStringsMapByDomain(domain).set(langKey, localizableStrings);
+        return localizableStrings;
     }
 
     async loadOnDefaultDomain() {
-        await this.load(this.detectDefaultDomain(), this.detectDefaultLanguage());
+        const defaultDomain = this.detectDefaultDomain();
+        await this.load(defaultDomain, FallbackLanguage);
+        const langKey = this.detectDefaultLanguage().toLowerCase();
+        let localizableStrings = await this.load(defaultDomain, langKey);
+        // If not found, try with shorter key (ja-JP -> ja)
+        const tokens = langKey.split("-");
+        let shorterLangKey;
+        while (this.isEmpty(localizableStrings) && tokens.length > 1) {
+            tokens.pop();
+            shorterLangKey = tokens.join("-");
+            localizableStrings = await this.load(defaultDomain, shorterLangKey);
+        }
     }
 
     // actions
@@ -50,23 +62,27 @@ class TextTranslationsManager {
         let localizableStrings = localizableStringsMap.get(langKey);
 
         // If not found, try with shorter key (ja-JP -> ja)
-        if (!localizableStrings && (langKey.indexOf("-") > 0)) {
-            const tokens = langKey.split("-");
-            let shorterLangKey;
-            while (!(tokens.length == 1 || localizableStrings)) {
-                tokens.pop();
-                shorterLangKey = tokens.join("-");
-                localizableStrings = this.localizableStrings.get(shorterLangKey);
-            }
+        const tokens = langKey.split("-");
+        let shorterLangKey;
+        while (this.isEmpty(localizableStrings) && tokens.length > 1) {
+            tokens.pop();
+            shorterLangKey = tokens.join("-");
+            localizableStrings = localizableStringsMap.get(shorterLangKey);
         }
 
-        // If still not found, try fallback localizableStrings
         if (!localizableStrings) {
-            localizableStrings = localizableStringsMap.get(FallbackLocale) || {};
+            localizableStrings = {};
         }
-        const value = localizableStrings[stringKey];
-        if (!value) return stringKey; // If there is no localization entry, return the original stringKey
-        return value;
+        let value = localizableStrings[stringKey];
+        if (value) return value;
+
+        // If still not found, try fallback localizableStrings
+        const fallbackLocalizableStrings = localizableStringsMap.get(FallbackLanguage) || {};
+        value = fallbackLocalizableStrings[stringKey];
+        if (value) return value;
+
+        // If there is no localization entry, return the original stringKey
+        return stringKey;;
     }
 
     //accessing
@@ -95,6 +111,10 @@ class TextTranslationsManager {
 
     urlForFetch(baseDirectory, domain, language) {
         return `${baseDirectory}/${domain}/${language}.json`; //TODO: use .tsv or .po format
+    }
+
+    isEmpty(obj) {
+        return Object.keys(obj).length === 0;
     }
 
     // detecting defaults
