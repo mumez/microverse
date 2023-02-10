@@ -14,21 +14,25 @@ function detectDefaultLanguage() {
 }
 
 class TextTranslationsManager {
-    localizableStringsUrl;
+    localesUrl;
     behaviorDirectoryName;
     localizableStringsMapByDomain = new Map();
 
     // setup
     setup({ baseUrl, behaviorDirectoryName, isSystem }) {
-        this.localizableStringsUrl = `${baseUrl}${BaseSubDirectoryPath}`;
         this.behaviorDirectoryName = behaviorDirectoryName;
+        this.setLocalesUrl(`${baseUrl}${BaseSubDirectoryPath}`);
         this.loadOnDefaultDomain();
+    }
+
+    setLocalesUrl(url) {
+        this.localesUrl = url;
     }
 
     // loading
     async load(domain, language) {
         const langKey = language.toLowerCase();
-        const localizableStrings = await this.tryLoadLocalizableStrings(this.localizableStringsUrl, domain, langKey);
+        const localizableStrings = await this.tryLoadLocalizableStrings(this.localesUrl, domain, langKey);
         this.ensureLocalizableStringsMapByDomain(domain).set(langKey, localizableStrings);
     }
 
@@ -77,7 +81,7 @@ class TextTranslationsManager {
 
     // private
     async tryLoadLocalizableStrings(baseUrl, domain, language) {
-        const url = this.localizableStringsUrlFor(baseUrl, domain, language);
+        const url = this.localesUrlFor(baseUrl, domain, language);
         return await fetch(url).then(res => {
             if (res.status >= 300) {
                 return {}
@@ -89,7 +93,7 @@ class TextTranslationsManager {
         })
     }
 
-    localizableStringsUrlFor(baseDirectory, domain, language) {
+    localesUrlFor(baseDirectory, domain, language) {
         return `${baseDirectory}/${domain}/${language}.json`; //TODO: use .tsv or .po format
     }
 
@@ -105,7 +109,7 @@ class TextTranslationsManager {
 
 const singleton = new TextTranslationsManager();
 
-export function __(stringKey, domain, language) {
+export function _(stringKey, domain, language) {
     return singleton.localize(stringKey, domain, language)
 }
 export function L(stringKey, domain, language) {
