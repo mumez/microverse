@@ -81,7 +81,7 @@ class TextTranslationsManager {
 
     // private
     async tryLoadLocalizableStrings(baseUrl, domain, language) {
-        const url = this.localesUrlFor(baseUrl, domain, language);
+        const url = this.urlForFetch(baseUrl, domain, language);
         return await fetch(url).then(res => {
             if (res.status >= 300) {
                 return {}
@@ -93,7 +93,7 @@ class TextTranslationsManager {
         })
     }
 
-    localesUrlFor(baseDirectory, domain, language) {
+    urlForFetch(baseDirectory, domain, language) {
         return `${baseDirectory}/${domain}/${language}.json`; //TODO: use .tsv or .po format
     }
 
