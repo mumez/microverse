@@ -69,7 +69,8 @@ class TextTranslationsManager {
     ensureLocalizableStringsMapByDomain(domain) {
         let localizableStrings = this.localizableStringsMapByDomain.get(domain);
         if (!localizableStrings) {
-            localizableStrings = this.localizableStringsMapByDomain.set(domain, new Map());
+            localizableStrings = new Map();
+            this.localizableStringsMapByDomain.set(domain, localizableStrings);
         }
         return localizableStrings;
     }
