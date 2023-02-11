@@ -22,7 +22,7 @@ class TextTranslationsManager {
     setup({ baseUrl, behaviorDirectoryName }) {
         this.behaviorDirectoryName = behaviorDirectoryName;
         this.setLocalesUrl(`${baseUrl}${BaseSubDirectoryPath}`);
-        this.loadOnDefaultDomain();
+        this.loadWithFallbackLanguage();
     }
 
     setLocalesUrl(url) {
@@ -45,11 +45,12 @@ class TextTranslationsManager {
         return localizableStrings;
     }
 
-    async loadOnDefaultDomain() {
-        const defaultDomain = this.detectDefaultDomain();
-        await this.load(defaultDomain, FallbackLanguage);
-        const langKey = this.detectDefaultLanguage().toLowerCase();
-        await this.load(defaultDomain, langKey);
+    async loadWithFallbackLanguage(domain = this.detectDefaultDomain(), language = this.detectDefaultLanguage()) {
+        await this.load(domain, FallbackLanguage);
+        const langKey = language.toLowerCase();
+        if (langKey !== FallbackLanguage) {
+            await this.load(domain, langKey);
+        }
     }
 
     // actions
