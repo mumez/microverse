@@ -125,8 +125,7 @@ function loadInitialBehaviors(paths, directory) {
 
     TextTranslationsManager.setup({
         baseUrl: root,
-        behaviorDirectoryName: directory,
-        isSystem: isSystem
+        behaviorDirectoryName: directory
     });
 
     let promises = paths.map((path) => {

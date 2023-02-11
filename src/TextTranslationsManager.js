@@ -15,11 +15,11 @@ function detectDefaultLanguage() {
 
 class TextTranslationsManager {
     localesUrl;
-    behaviorDirectoryName;
+    behaviorDirectoryName = '';
     localizableStringsMapByDomain = new Map();
 
     // setup
-    setup({ baseUrl, behaviorDirectoryName, isSystem }) {
+    setup({ baseUrl, behaviorDirectoryName }) {
         this.behaviorDirectoryName = behaviorDirectoryName;
         this.setLocalesUrl(`${baseUrl}${BaseSubDirectoryPath}`);
         this.loadOnDefaultDomain();
@@ -32,8 +32,16 @@ class TextTranslationsManager {
     // loading
     async load(domain, language) {
         const langKey = language.toLowerCase();
-        const localizableStrings = await this.tryLoadLocalizableStrings(this.localesUrl, domain, langKey);
+        let localizableStrings = await this.tryLoadLocalizableStrings(this.localesUrl, domain, langKey);
         this.ensureLocalizableStringsMapByDomain(domain).set(langKey, localizableStrings);
+        // If not found, try with shorter key (ja-JP -> ja)
+        const tokens = langKey.split("-");
+        let shorterLangKey;
+        while (this.isEmpty(localizableStrings) && tokens.length > 1) {
+            tokens.pop();
+            shorterLangKey = tokens.join("-");
+            localizableStrings = await this.load(domain, shorterLangKey);
+        }
         return localizableStrings;
     }
 
@@ -41,15 +49,7 @@ class TextTranslationsManager {
         const defaultDomain = this.detectDefaultDomain();
         await this.load(defaultDomain, FallbackLanguage);
         const langKey = this.detectDefaultLanguage().toLowerCase();
-        let localizableStrings = await this.load(defaultDomain, langKey);
-        // If not found, try with shorter key (ja-JP -> ja)
-        const tokens = langKey.split("-");
-        let shorterLangKey;
-        while (this.isEmpty(localizableStrings) && tokens.length > 1) {
-            tokens.pop();
-            shorterLangKey = tokens.join("-");
-            localizableStrings = await this.load(defaultDomain, shorterLangKey);
-        }
+        await this.load(defaultDomain, langKey);
     }
 
     // actions
