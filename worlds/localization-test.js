@@ -38,6 +38,8 @@ export function init(Constants) {
                 dataType: "jpg",
             }
         },
+
+        // A sample of implicit textDomain. If textDomain is not set, currently UserBehaviorDirectory name is used as a textDomain.
         {
             card: {
                 name: "localizedText",
@@ -51,6 +53,30 @@ export function init(Constants) {
                 width: 1,
                 height: 0.75,
                 frameColor: 0x888888,
+                textContents: [
+                    'TEST', 'test', 'yes', 'no', 'hello'
+                ],
+                depth: 0.05,
+                cornerRadius: 0.1,
+                behaviorModules: ["LocalizedTextPanel"],
+            },
+        },
+
+        // A sample of explicit textDomain. The name must be unique across all microverse applications.
+        {
+            card: {
+                name: "localizedText-with-explicit-text-domain",
+                translation: [5, 0.6, -16.87],
+                rotation: [0, 0, 0],
+                scale: [3, 3, 3],
+                type: "2d",
+                textureType: "canvas",
+                textureWidth: 1024,
+                textureHeight: 768,
+                width: 1,
+                height: 0.75,
+                frameColor: 0x888888,
+                textDomain: 'my.domain',
                 textContents: [
                     'TEST', 'test', 'yes', 'no', 'hello'
                 ],

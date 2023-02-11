@@ -3,11 +3,15 @@
 // info@croquet.io
 
 class LocalizedTextActor {
-    setup() {
+    async setup() {
         if (this._cardData.textLabel == null) {
             this._cardData.textLabel = "test";
         }
         this.addEventListener("pointerDown", "changeText");
+        // if textDomain is set, load translations
+        if (this._cardData.textDomain) {
+            await this.textTranslationsManager.loadWithFallbackLanguage(this._cardData.textDomain);
+        }
     }
 
     changeText() {
@@ -30,6 +34,10 @@ class LocalizedTextPawn {
         const w = this.canvas.width;
         let h = 85;
         ctx.fillText(this.detectDefaultLanguage, w / 2, h);
+        if (this.textDomain) {
+            h += 30
+            ctx.fillText(this.textDomain, w / 2, h);
+        }
         h += 25
         ctx.fillStyle = "white";
         textContents.forEach(text => {
@@ -42,11 +50,20 @@ class LocalizedTextPawn {
 
     // accessing
     localized(originalString) {
-        return this.actor.textTranslationsManager.localize(originalString);
+        if (this.textDomain) {
+            return this.actor.textTranslationsManager.localize(originalString, this.textDomain);
+        } else {
+            // If textDomain is not given, implicitly use the textDomain based on the current behavior directory name
+            return this.actor.textTranslationsManager.localize(originalString);
+        }
     }
 
     get detectDefaultLanguage() {
         return this.actor.textTranslationsManager.detectDefaultLanguage();
+    }
+
+    get textDomain() {
+        return this.actor._cardData.textDomain;
     }
 
 }

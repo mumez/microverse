@@ -60,7 +60,7 @@ class TextTranslationsManager {
 
         const langKey = language.toLowerCase();
         // Try language specific localizableStrings first
-        let localizableStrings = localizableStringsMap.get(langKey);
+        let localizableStrings = localizableStringsMap.get(langKey) || {};
 
         // If not found, try with shorter key (ja-JP -> ja)
         const tokens = langKey.split("-");
