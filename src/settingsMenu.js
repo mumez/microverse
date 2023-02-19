@@ -4,6 +4,7 @@
 
 import {filterDomEventsOn, closeAllDialogs, hideShellControls} from "./worldMenu.js";
 import { App } from "@croquet/worldcore-kernel";
+import { __ as _ } from './TextTranslationsManager.js';
 
 let settingsMenu = null;
 let nicknameIsValid;
@@ -45,44 +46,42 @@ function createSettingsMenu(useEnter) {
         </div>
         -->
         <div id="joinPrompt">
-            <div id="joinPromptTitle">Settings</div>
-            <div id="joinPromptBlurb" class="promptBlurb">Specify a nickname, and choose an avatar either
-                by selecting from those on display or pasting a valid Ready Player Me URL.
-            </div>
+            <div id="joinPromptTitle">${_("Settings")}</div>
+            <div id="joinPromptBlurb" class="promptBlurb">${_("Specify a nickname, and choose an avatar either by selecting from those on display or pasting a valid Ready Player Me URL.")}</div>
         </div>
-        <div id="settings-title" class="panel-title">Settings</div>
+        <div id="settings-title" class="panel-title">${_("Settings")}</div>
         <div class="settings-container">
             <div id="nameInput" class="stringInputHolder">
-                <div id="namePrompt" class="namePrompt">Nickname<span>*</span></div>
+                <div id="namePrompt" class="namePrompt">${_("Nickname")}<span>*</span></div>
                 <div id="nameField" class="nameField allow-select" contenteditable="true"></div>
-                <div id="nameExplanation">Enter 1-12 characters (ASCII only).</div>
+                <div id="nameExplanation">${_("Enter 1-12 characters (ASCII only).")}</div>
                 <div id="nameFilterWarning"><br /></div>
             </div>
-            <div id="selectAvatar" class="namePrompt">Select Avatar</div>
+            <div id="selectAvatar" class="namePrompt">${_("Select Avatar")}</div>
             <div id="dialogAvatarSelections">
                 <div id="avatarList"></div>
             </div>
             <div id="avatarURL" class="stringInputHolder">
-                <div id="avatarURLPrompt" class="namePrompt">Or, Enter an Avatar URL</div>
+                <div id="avatarURLPrompt" class="namePrompt">${_("Or, Enter an Avatar URL")}</div>
                 <div id="avatarURLField" class="nameField avatarNameField allow-select" contenteditable="true"></div>
             </div>
             <div id="handednessRow">
-                <div id="handednessLabel">Hand:</div>
+                <div id="handednessLabel">${_("Hand")}:</div>
                 <div class="btn-group" id="handedness">
                     <label class="btn btn-radio-button">
-                         <input type="radio" name="options" id="left"><span class="handedness-label">Left</span>
+                         <input type="radio" name="options" id="left"><span class="handedness-label">${_("Left")}</span>
                     </label>
                     <label class="btn btn-radio-button">
-                        <input type="radio" name="options" id="right" checked><span class="handedness-label">Right</span>
+                        <input type="radio" name="options" id="right" checked><span class="handedness-label">${_("Right")}</span>
                     </label>
                 </div>
             </div>
             <div id="dialogEnterButton" class="dialogButtonsHolder disabled">
-                <div id="enterButton">Enter</div>
+                <div id="enterButton">${_("Enter")}</div>
             </div>
             <div id="dialogAcceptCancelButtons" class="dialogButtonsHolder twoItems">
-                <button id="cancel-button" type="button" class="btn btn-danger cancel-button">Cancel</button>
-                <button type="button" id="acceptButton" class="btn btn-success">Apply</button>
+                <button id="cancel-button" type="button" class="btn btn-danger cancel-button">${_("Cancel")}</button>
+                <button type="button" id="acceptButton" class="btn btn-success">${_("Apply")}</button>
             </div>
         </div>
     </div>
@@ -164,7 +163,7 @@ function createSettingsMenu(useEnter) {
     }
 
     if (joinPromptBlurb && simplerMenu) {
-        joinPromptBlurb.textContent = "Specify a nickname and press Enter.";
+        joinPromptBlurb.textContent = _("Specify a nickname and press Enter.");
     }
 
     populateAvatarSelection();
@@ -403,21 +402,21 @@ function createShareMenu(avatar) {
     <div id="shareDialog" class="dialogPanel no-select">
         <button id="close-button" type="button" class="btn btn-danger btn-x topright">x</button>
         <div id="share-container" class="content-container">
-            <div id="share-title" class="panel-title">Invite Users<br></div>
-            <div class="promptBlurb">Scan QR code or click to open a new browser tab in the same session.</div>
+            <div id="share-title" class="panel-title">${_("Invite Users")}<br></div>
+            <div class="promptBlurb">${_("Scan QR code or click to open a new browser tab in the same session.")}</div>
             <div id="share-qr"></div>
 
-            <div class="share-settings-label">Copy Share Link</div>
+            <div class="share-settings-label">${_("Copy Share Link")}</div>
             <div class="share-menu-row">
-                <div id="copy-link" class="copy-link allow-select">generated link</div>
-                <button id="copy-button" type="button" class="btn btn-outline-success">Copy</button>
-            </div>
-            <div id="save-vrse-row" class="share-menu-row">
-                <div class="share-settings-label">Save world as VRSE file</div>
-                <button id="save-button" type="button" class="btn btn-outline-success">Download</button>
-            </div>
+                <div id="copy-link" class="copy-link allow-select">${_("generated link")}</div>
+                <button id="copy-button" type="button" class="btn btn-outline-success">${_("Copy")}</button>
+            </div >
+        <div id="save-vrse-row" class="share-menu-row">
+            <div class="share-settings-label">${_("Save world as VRSE file")}</div>
+            <button id="save-button" type="button" class="btn btn-outline-success">${_("Download")}</button>
         </div>
-    </div>`.trim();
+        </div >
+    </div > `.trim();
 
     let div = document.createElement("div");
     div.innerHTML = share;

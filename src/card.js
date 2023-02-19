@@ -19,6 +19,7 @@ import { DynamicTexture } from './DynamicTexture.js'
 import { AM_Code, PM_Code } from './code.js';
 import { WorldSaver } from './worldSaver.js';
 
+import TextTranslationsManager from './TextTranslationsManager.js';
 // import { forEach } from 'jszip';
 
 const { MeshBVH, /*MeshBVHVisualizer*/ } = THREE_MESH_BVH;
@@ -502,6 +503,10 @@ export class CardActor extends mix(Actor).with(AM_Smoothed, AM_PointerTarget, AM
 
     getTextFieldActorClass() {
         return TextFieldActor;
+    }
+
+    get textTranslationsManager() {
+        return TextTranslationsManager;
     }
 }
 CardActor.register('CardActor');
